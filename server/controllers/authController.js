@@ -138,7 +138,7 @@ export const sendVerifyOtp = async (req, res)=>{
             from: process.env.SENDER_EMAIL,
             to: user.email,
             subject: 'Account Verification OTP',
-            text: `Your account varification OTP is ${otp}. Verify your account using this OTP.`
+            text: `Your secure verification code is ${otp}. Enter this code to verify your account. ⚠️ For your safety, do not share this OTP with anyone.`
         }
 
         await transporter.sendMail(mailOption);
@@ -210,7 +210,7 @@ export const sendResetOtp = async (req, res)=>{
     
 
     try {
-        const user = await userModel.findOne(email);
+        const user = await userModel.findOne({email});
         if(!user){
             return res.json({success: false, message: "User not found"});
         }
@@ -234,5 +234,46 @@ export const sendResetOtp = async (req, res)=>{
         
     } catch (error) {
         return res.json({success: false, message: error.message});
+    }
+}
+
+// reset user password
+
+export const resetPassword = async (req, res) => {
+    const {email, otp, newPassword} = req.body;
+    // const otp = req.body.otp;
+
+
+    if(!email || !otp || !newPassword){
+        return res.json({success: false, message: "Email, OTP and new password is required"});
+    }
+
+    try {
+
+        const user = await userModel.findOne({email})
+        if(!user){
+            return res.json({success: false, message: "User not found"});
+        }
+
+        if(user.resetOtp === "" || user.resetOtp !== otp){
+            return res.json({success: false, message: "Invalid OTP"});
+        }
+        if(user.resetOtpExpireAt< Date.now()){
+            return res.json({success: false, message: "OTP expired"});
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        user.resetOtp = "";
+        user.resetOtpExpireAt = 0;
+
+        await user.save();
+
+        return res.json({ success: true, message: "Your password has been reset successfully."});
+
+        
+    } catch (error) {
+        return res.json({success: false, message: error.message});
+
     }
 }
