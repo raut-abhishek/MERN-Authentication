@@ -269,7 +269,26 @@ export const resetPassword = async (req, res) => {
 
         await user.save();
 
-        return res.json({ success: true, message: "Your password has been reset successfully."});
+        
+        //Send confirmation email
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: user.email,
+            subject: "Password Reset Successful",
+            html: `
+                <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                <h2 style="color: #2E86C1;">Password Reset Successful</h2>
+                <p>Dear ${user.name || "User"},</p>
+                <p>Your password has been reset successfully. If you made this change, you can safely ignore this email.</p>
+                <p>If you did <strong>not</strong> request this change, please <a href="${process.env.FRONTEND_URL}/forgot-password" style="color: #E74C3C;">reset your password immediately</a> or contact support.</p>
+                <p>Best regards,<br><strong>The Support Team</strong></p>
+                </div>
+                `,
+        };
+
+        await transporter.sendMail(mailOptions);
+        
+        return res.json({ success: true, message: "Your password has been reset successfully. You can now log in with your new credentials."});
 
         
     } catch (error) {
