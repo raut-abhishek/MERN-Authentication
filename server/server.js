@@ -11,11 +11,11 @@ const port = process.env.PORT || 4000;
 
 connectDB();
 
+const alloudOrigins = ['http://localhost:5173']
+
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: "http://localhost:4000",
-    credentials: true}));
+app.use(cors({origin: alloudOrigins ,credentials: true}));
 
 app.get('/', (req, res)=>{
     res.send("Hello")
