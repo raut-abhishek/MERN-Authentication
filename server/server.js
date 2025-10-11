@@ -19,9 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({origin: alloudOrigins ,credentials: true}));
 
-app.get('/', (req, res)=>{
-    res.send("Hello")
-})
+
 
 // API Endpoints
 app.use('/api/auth', authRouter);
@@ -31,5 +29,12 @@ app.use('/api/user', userRouter);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, '../client/dist')));
+
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
+
+
 
 app.listen(port, ()=>console.log(`Server is running on PORT: ${port}`))
