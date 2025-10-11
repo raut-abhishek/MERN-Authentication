@@ -25,5 +25,9 @@ app.get('/', (req, res)=>{
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 
+// Serve Vite frontend
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.listen(port, ()=>console.log(`Server is running on PORT: ${port}`))
