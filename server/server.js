@@ -28,11 +28,19 @@ app.use('/api/user', userRouter);
 // Serve Vite frontend
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, '../client/dist')));
+const frontendPath = path.join(__dirname, '../client/dist');
 
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+app.use(express.static(frontendPath));
+
+// Catch-all route for React
+app.use((req, res, next) => {
+  // if request doesn't start with /api
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  } else {
+    next();
+  }
 });
 
 
