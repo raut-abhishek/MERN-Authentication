@@ -113,20 +113,10 @@ const Login = () => {
             Don't have an account ? {' '}
             <span onClick={()=>{setState('Sign Up')}} className='text-blue-400 cursor-pointer underline'>Sign Up</span>
           </p>
-        )}
-
-
-        
-
-        
-        
+        )}   
       </div>
-
-
-
     </div>
   )
 }
-
 
 export default Login;
