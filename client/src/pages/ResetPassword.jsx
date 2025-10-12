@@ -46,6 +46,7 @@ const ResetPassword = () => {
 
     const onSubmitEmail = async (e)=>{
       e.preventDefault();
+      console.log("Submitting email:", email, backendUrl);
       try {
 
         const {data} = await axios.post(backendUrl + '/api/auth/send-reset-otp', {email});
