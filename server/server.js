@@ -27,17 +27,9 @@ app.use(cors({origin: alloudOrigins ,credentials: true}));
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 
-// // Serve Vite frontend
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 
-app.use(express.static(path.join(__dirname, '../client/dist')));
 
-// Catch-all route for React
-app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-});
 
 app.get('/', (req, res) => {
     res.send("Backend is running");
