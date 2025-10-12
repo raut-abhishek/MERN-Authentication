@@ -14,7 +14,7 @@ const port = process.env.PORT || 4000;
 connectDB();
 
 const alloudOrigins = ['http://localhost:5173',
-  'https://mern-auth-client-wlnz.onrender.com'
+  'https://mern-authentication-client-wlnz.onrender.com'
 ]
 
 app.use(express.json());
