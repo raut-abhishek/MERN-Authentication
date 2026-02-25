@@ -61,7 +61,7 @@ const Login = () => {
         </h2>
 
         <p className='text-center text-sm mb-6'>
-          {state === 'Sign Up' ? 'Create your account' : 'Login to your account!'}
+          {state === 'Sign Up' ? 'Join our platform' : 'Login to access your account!'}
         </p>
 
         <form onSubmit={onSubmitHandeler}>
