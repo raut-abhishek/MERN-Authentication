@@ -11,21 +11,30 @@ const Navbar = () => {
   const navigate = useNavigate()
   const {userData, backendUrl, setUserData, setIsLoggedin} = useContext(AppContent);
 
-  const sendVerificationOtp = async ()=>{
+  const sendVerificationOtp = async () => {
+    console.log("verify email clicked");
+
     try {
-
       axios.defaults.withCredentials = true;
-      const {data} = await axios.post(backendUrl + '/api/auth/send-verify-otp');
-      if(data.success){
-        navigate('/email-verify');
-        toast.success(data.message)
-      }
-      
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
 
+      const { data } = await axios.post(
+        backendUrl + '/api/auth/send-verify-otp'
+      );
+
+      console.log("API Response:", data); // 👈 ADD THIS
+
+      if (data.success) {
+        toast.success(data.message);
+        navigate('/email-verify');
+      } else {
+        toast.error(data.message); // 👈 VERY IMPORTANT
+      }
+
+    } catch (error) {
+      console.log("ERROR:", error.response);
+      toast.error(error.response?.data?.message || error.message);
+    }
+  };
   const logout = async ()=>{
     try {
       axios.defaults.withCredentials = true;
