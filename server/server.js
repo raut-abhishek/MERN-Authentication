@@ -17,9 +17,9 @@ const alloudOrigins = ['http://localhost:5173',
   'https://mern-authentication-client-wlnz.onrender.com'
 ]
 
+app.use(cors({origin: alloudOrigins ,credentials: true}));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({origin: alloudOrigins ,credentials: true}));
 
 
 
